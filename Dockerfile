@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 node:18-alpine
+FROM --platform=linux/amd64 node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -9,7 +9,14 @@ RUN apk add --no-cache python3 make g++
 RUN npm install --legacy-peer-deps && apk del python3 make g++
 
 COPY . .
+RUN npm run build
 
-COPY ./dist ./dist
+FROM --platform=linux/amd64 node:18-alpine
 
-CMD ["npm", "run", "start:dev"]
+WORKDIR /app
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY package*.json ./
+
+CMD ["node", "dist/main"]
