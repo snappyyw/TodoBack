@@ -1,7 +1,7 @@
 services:
   todo-nest:
     container_name: todo-nest
-    image: todo-nest:latest
+    image: snippymr/todo-nest:latest
     build:
       context: .
     env_file:
