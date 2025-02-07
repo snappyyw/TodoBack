@@ -13,6 +13,7 @@ const list_controller_1 = require("./list.controller");
 const list_service_1 = require("./list.service");
 const board_model_1 = require("../board/board.model");
 const list_model_1 = require("./list.model");
+const board_module_1 = require("../board/board.module");
 let ListModule = class ListModule {
 };
 exports.ListModule = ListModule;
@@ -21,6 +22,7 @@ exports.ListModule = ListModule = __decorate([
         controllers: [list_controller_1.ListController],
         providers: [list_service_1.ListService],
         imports: [
+            board_module_1.BoardModule,
             sequelize_1.SequelizeModule.forFeature([board_model_1.Board, list_model_1.List])
         ]
     })

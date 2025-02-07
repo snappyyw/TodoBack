@@ -6,14 +6,52 @@ import { GetListDto } from "./dto/getList.dto";
 import { CreateListDto } from "./dto/createList.dto";
 import { WhereOptions } from "sequelize";
 import { EditListDto } from "./dto/editList.dto";
+import { BoardService } from "../board/board.service";
+import { DeleteListDto } from "./dto/deleteList.dto";
 
 @Injectable()
 export class ListService {
 
-  constructor(@InjectModel(List) private listRepository: typeof List) {
+  constructor(@InjectModel(List) private listRepository: typeof List, private boardService: BoardService) {
+  }
+
+  async getList(listId: string){
+    return await this.listRepository.findOne({
+      where: {
+        id: listId
+      } as WhereOptions<List>
+    })
+  }
+
+  async deleteList(deleteListDto: DeleteListDto){
+    try {
+      const board = await this.boardService.getBoard(deleteListDto.boardId)
+
+      if(board.userId !== deleteListDto.userId){
+        throw new NotFoundException('Нет прав на удаление листа');
+      }
+
+      const currentList = await this.getList(deleteListDto.listId)
+
+      if(currentList.boardId !== board.id){
+        throw new NotFoundException('Нет прав на удаление листа');
+      }
+
+      await currentList.destroy();
+
+      return { message: 'Доска успешно удалена' };
+    } catch (error){
+      throw error
+    }
   }
 
   async getAllList(getListDto: GetListDto){
+    const board = await this.boardService.getBoard(getListDto.boardId)
+
+    if(board.userId !== getListDto.userId){
+      throw new NotFoundException('Нет прав на получение листа');
+    }
+
     return await this.listRepository.findAll({
       attributes: ['id', 'name'],
       where: {
@@ -29,11 +67,19 @@ export class ListService {
 
   async editList (editListDto: EditListDto) {
     try {
-      const list = await this.listRepository.findOne({
-        where: { id: editListDto.listId } as WhereOptions<List>
-      });
+      const board = await this.boardService.getBoard(editListDto.boardId)
 
-      if (!list) {
+      if(board.userId !== editListDto.userId){
+        throw new NotFoundException('Нет прав для изменения листа');
+      }
+
+      const currentList = await this.getList(editListDto.listId)
+
+      if(currentList.boardId !== board.id){
+        throw new NotFoundException('Нет прав для изменения листа');
+      }
+
+      if (!currentList) {
         throw new NotFoundException('Лист не найден');
       }
 

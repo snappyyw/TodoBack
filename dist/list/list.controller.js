@@ -21,6 +21,7 @@ const createList_dto_1 = require("./dto/createList.dto");
 const list_dto_1 = require("./dto/list.dto");
 const getList_dto_1 = require("./dto/getList.dto");
 const editList_dto_1 = require("./dto/editList.dto");
+const deleteList_dto_1 = require("./dto/deleteList.dto");
 let ListController = class ListController {
     constructor(listService) {
         this.listService = listService;
@@ -28,16 +29,33 @@ let ListController = class ListController {
     createBoard(createListDto) {
         return this.listService.createList(createListDto);
     }
-    editBoard(editBoardDto, request) {
+    deleteBoard(deleteListDto, request) {
         try {
-            return this.listService.editList(editBoardDto);
+            return this.listService.deleteList({
+                ...deleteListDto,
+                userId: request?.user?.id,
+            });
         }
         catch (error) {
             throw error;
         }
     }
-    getBoard(getListDto) {
-        return this.listService.getAllList(getListDto);
+    editBoard(editBoardDto, request) {
+        try {
+            return this.listService.editList({
+                ...editBoardDto,
+                userId: request.user.id,
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    getBoard(getListDto, request) {
+        return this.listService.getAllList({
+            ...getListDto,
+            userId: request.user.id,
+        });
     }
 };
 exports.ListController = ListController;
@@ -52,6 +70,18 @@ __decorate([
     __metadata("design:paramtypes", [createList_dto_1.CreateListDto]),
     __metadata("design:returntype", void 0)
 ], ListController.prototype, "createBoard", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Удаление листа' }),
+    (0, swagger_1.ApiResponse)({ status: 200, example: { message: 'Лист успешно удален' } }),
+    (0, common_1.Delete)('/deleteList'),
+    (0, common_1.HttpCode)(200),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Query)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [deleteList_dto_1.DeleteListDto, Object]),
+    __metadata("design:returntype", void 0)
+], ListController.prototype, "deleteBoard", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Изменение листа' }),
     (0, swagger_1.ApiResponse)({ status: 200, example: { message: 'Лист успешно изменен' } }),
@@ -71,8 +101,9 @@ __decorate([
     (0, common_1.HttpCode)(200),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [getList_dto_1.GetListDto]),
+    __metadata("design:paramtypes", [getList_dto_1.GetListDto, Object]),
     __metadata("design:returntype", void 0)
 ], ListController.prototype, "getBoard", null);
 exports.ListController = ListController = __decorate([

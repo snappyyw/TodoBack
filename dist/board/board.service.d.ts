@@ -5,6 +5,7 @@ import { DeleteBoardDto } from "./dto/deleteBoard.dto";
 export declare class BoardService {
     private boardRepository;
     constructor(boardRepository: typeof Board);
+    getBoard(boardId: string): Promise<Board>;
     getAllBoard(userId: string): Promise<Board[]>;
     deleteBoard(deleteBoardDto: DeleteBoardDto): Promise<{
         message: string;

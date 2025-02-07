@@ -17,6 +17,15 @@ export class BoardService {
   constructor(@InjectModel(Board) private boardRepository: typeof Board) {
   }
 
+
+  async getBoard(boardId: string){
+    return await this.boardRepository.findOne({
+      where: {
+        id: boardId
+      } as WhereOptions<Board>
+    })
+  }
+
   async getAllBoard(userId: string){
     return await this.boardRepository.findAll({
       attributes: ['id', 'name'],
@@ -28,9 +37,7 @@ export class BoardService {
 
   async deleteBoard (deleteBoardDto: DeleteBoardDto){
     try {
-      const board = await this.boardRepository.findOne({
-        where: { id: deleteBoardDto.boardId } as WhereOptions<Board>
-      });
+      const board = await this.getBoard(deleteBoardDto.boardId)
 
       if (!board) {
         throw new NotFoundException('Доска не найдена');
@@ -50,9 +57,7 @@ export class BoardService {
 
   async editBoard (editBoardDto: EditBoardDto) {
     try {
-      const board = await this.boardRepository.findOne({
-        where: { id: editBoardDto.boardId } as WhereOptions<Board>
-      });
+      const board = await this.getBoard(editBoardDto.boardId);
 
       if (!board) {
         throw new NotFoundException('Доска не найдена');

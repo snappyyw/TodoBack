@@ -22,7 +22,8 @@ exports.BoardModule = BoardModule = __decorate([
         providers: [board_service_1.BoardService],
         imports: [
             sequelize_1.SequelizeModule.forFeature([users_model_1.User, board_model_1.Board])
-        ]
+        ],
+        exports: [board_service_1.BoardService]
     })
 ], BoardModule);
 //# sourceMappingURL=board.module.js.map

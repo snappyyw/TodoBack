@@ -34,9 +34,9 @@ export class BoardController {
   }
 
   @ApiOperation({summary: 'Удаление доски'})
-  @ApiResponse({status: 204, example: { message: 'Доска успешно удалена' }})
+  @ApiResponse({status: 200, example: { message: 'Доска успешно удалена' }})
   @Delete('/deleteBoard')
-  @HttpCode(204)
+  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   deleteBoard(
     @Query() deleteBoardDto: DeleteBoardDto,

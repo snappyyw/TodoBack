@@ -20,6 +20,13 @@ let BoardService = class BoardService {
     constructor(boardRepository) {
         this.boardRepository = boardRepository;
     }
+    async getBoard(boardId) {
+        return await this.boardRepository.findOne({
+            where: {
+                id: boardId
+            }
+        });
+    }
     async getAllBoard(userId) {
         return await this.boardRepository.findAll({
             attributes: ['id', 'name'],
@@ -30,9 +37,7 @@ let BoardService = class BoardService {
     }
     async deleteBoard(deleteBoardDto) {
         try {
-            const board = await this.boardRepository.findOne({
-                where: { id: deleteBoardDto.boardId }
-            });
+            const board = await this.getBoard(deleteBoardDto.boardId);
             if (!board) {
                 throw new common_1.NotFoundException('Доска не найдена');
             }
@@ -48,9 +53,7 @@ let BoardService = class BoardService {
     }
     async editBoard(editBoardDto) {
         try {
-            const board = await this.boardRepository.findOne({
-                where: { id: editBoardDto.boardId }
-            });
+            const board = await this.getBoard(editBoardDto.boardId);
             if (!board) {
                 throw new common_1.NotFoundException('Доска не найдена');
             }

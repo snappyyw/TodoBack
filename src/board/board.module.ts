@@ -10,6 +10,7 @@ import { Board } from "./board.model";
   providers: [BoardService],
   imports: [
     SequelizeModule.forFeature([User, Board])
-  ]
+  ],
+  exports: [BoardService]
 })
 export class BoardModule {}

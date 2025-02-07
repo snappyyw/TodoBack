@@ -72,9 +72,9 @@ __decorate([
 ], BoardController.prototype, "createBoard", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Удаление доски' }),
-    (0, swagger_1.ApiResponse)({ status: 204, example: { message: 'Доска успешно удалена' } }),
+    (0, swagger_1.ApiResponse)({ status: 200, example: { message: 'Доска успешно удалена' } }),
     (0, common_1.Delete)('/deleteBoard'),
-    (0, common_1.HttpCode)(204),
+    (0, common_1.HttpCode)(200),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Query)()),
     __param(1, (0, common_1.Req)()),
