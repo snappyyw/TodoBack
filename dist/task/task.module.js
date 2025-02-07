@@ -6,26 +6,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ListModule = void 0;
+exports.TaskModule = void 0;
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
-const list_controller_1 = require("./list.controller");
-const list_service_1 = require("./list.service");
-const board_model_1 = require("../board/board.model");
-const list_model_1 = require("./list.model");
+const task_controller_1 = require("./task.controller");
+const task_service_1 = require("./task.service");
+const list_model_1 = require("../list/list.model");
 const board_module_1 = require("../board/board.module");
-let ListModule = class ListModule {
+const list_module_1 = require("../list/list.module");
+const task_model_1 = require("./task.model");
+let TaskModule = class TaskModule {
 };
-exports.ListModule = ListModule;
-exports.ListModule = ListModule = __decorate([
+exports.TaskModule = TaskModule;
+exports.TaskModule = TaskModule = __decorate([
     (0, common_1.Module)({
-        controllers: [list_controller_1.ListController],
-        providers: [list_service_1.ListService],
+        controllers: [task_controller_1.TaskController],
+        providers: [task_service_1.TaskService],
         imports: [
             board_module_1.BoardModule,
-            sequelize_1.SequelizeModule.forFeature([board_model_1.Board, list_model_1.List])
+            list_module_1.ListModule,
+            sequelize_1.SequelizeModule.forFeature([list_model_1.List, task_model_1.Task])
         ],
-        exports: [list_service_1.ListService]
     })
-], ListModule);
-//# sourceMappingURL=list.module.js.map
+], TaskModule);
+//# sourceMappingURL=task.module.js.map

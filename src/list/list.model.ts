@@ -1,7 +1,8 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
 import { ApiProperty } from "@nestjs/swagger";
 
 import { Board } from "../board/board.model";
+import { Task } from "../task/task.model";
 
 interface BoardCreationAttrs {
   name: string;
@@ -22,4 +23,7 @@ export class List extends Model<List, BoardCreationAttrs> {
 
   @BelongsTo(() => Board)
   board: Board
+
+  @HasMany(() => Task)
+  task: Task[];
 }

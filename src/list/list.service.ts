@@ -69,18 +69,22 @@ export class ListService {
     try {
       const board = await this.boardService.getBoard(editListDto.boardId)
 
+      if (!board) {
+        throw new NotFoundException('Борд не найден');
+      }
+
       if(board.userId !== editListDto.userId){
         throw new NotFoundException('Нет прав для изменения листа');
       }
 
       const currentList = await this.getList(editListDto.listId)
 
-      if(currentList.boardId !== board.id){
-        throw new NotFoundException('Нет прав для изменения листа');
-      }
-
       if (!currentList) {
         throw new NotFoundException('Лист не найден');
+      }
+
+      if(currentList.boardId !== board.id){
+        throw new NotFoundException('Нет прав для изменения листа');
       }
 
       const [affectedCount] = await this.listRepository.update(

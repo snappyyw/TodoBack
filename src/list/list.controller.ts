@@ -70,7 +70,6 @@ export class ListController {
     }
   }
 
-
   @ApiOperation({summary: 'Получение листов'})
   @ApiResponse({status: 200, type: [ListDto]})
   @Get('/list')

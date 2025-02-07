@@ -9,37 +9,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.List = void 0;
+exports.Task = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const swagger_1 = require("@nestjs/swagger");
-const board_model_1 = require("../board/board.model");
-const task_model_1 = require("../task/task.model");
-let List = class List extends sequelize_typescript_1.Model {
+const list_model_1 = require("../list/list.model");
+let Task = class Task extends sequelize_typescript_1.Model {
 };
-exports.List = List;
+exports.Task = Task;
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.UUID, defaultValue: sequelize_typescript_1.DataType.UUIDV4, primaryKey: true }),
     __metadata("design:type", String)
-], List.prototype, "id", void 0);
+], Task.prototype, "id", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'New list', description: 'Наименование листа' }),
+    (0, swagger_1.ApiProperty)({ example: 'New task', description: 'Наименование задачи' }),
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, unique: false, allowNull: false }),
     __metadata("design:type", String)
-], List.prototype, "name", void 0);
+], Task.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => board_model_1.Board),
+    (0, swagger_1.ApiProperty)({ example: 'true', description: 'Статус задачи(активная/неактивная)' }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BOOLEAN, unique: false, allowNull: false }),
+    __metadata("design:type", Boolean)
+], Task.prototype, "isActive", void 0);
+__decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => list_model_1.List),
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.UUID, allowNull: false }),
     __metadata("design:type", String)
-], List.prototype, "boardId", void 0);
+], Task.prototype, "listId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => board_model_1.Board),
-    __metadata("design:type", board_model_1.Board)
-], List.prototype, "board", void 0);
-__decorate([
-    (0, sequelize_typescript_1.HasMany)(() => task_model_1.Task),
-    __metadata("design:type", Array)
-], List.prototype, "task", void 0);
-exports.List = List = __decorate([
-    (0, sequelize_typescript_1.Table)({ tableName: 'list' })
-], List);
-//# sourceMappingURL=list.model.js.map
+    (0, sequelize_typescript_1.BelongsTo)(() => list_model_1.List),
+    __metadata("design:type", list_model_1.List)
+], Task.prototype, "list", void 0);
+exports.Task = Task = __decorate([
+    (0, sequelize_typescript_1.Table)({ tableName: 'task' })
+], Task);
+//# sourceMappingURL=task.model.js.map

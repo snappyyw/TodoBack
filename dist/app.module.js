@@ -18,6 +18,8 @@ const board_module_1 = require("./board/board.module");
 const board_model_1 = require("./board/board.model");
 const list_module_1 = require("./list/list.module");
 const list_model_1 = require("./list/list.model");
+const task_module_1 = require("./task/task.module");
+const task_model_1 = require("./task/task.model");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,13 +39,14 @@ exports.AppModule = AppModule = __decorate([
                 username: process.env.POSTGRES_USER,
                 password: process.env.POSTGRES_PASSWORD,
                 database: process.env.POSTGRES_DB,
-                models: [users_model_1.User, board_model_1.Board, list_model_1.List],
+                models: [users_model_1.User, board_model_1.Board, list_model_1.List, task_model_1.Task],
                 autoLoadModels: true,
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             board_module_1.BoardModule,
             list_module_1.ListModule,
+            task_module_1.TaskModule,
         ],
     })
 ], AppModule);

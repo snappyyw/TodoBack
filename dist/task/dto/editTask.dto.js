@@ -9,22 +9,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteListDto = void 0;
+exports.EditTaskDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
-class DeleteListDto {
+class EditTaskDto {
 }
-exports.DeleteListDto = DeleteListDto;
+exports.EditTaskDto = EditTaskDto;
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'List', description: 'Новое наименование задачи' }),
+    (0, class_validator_1.IsDefined)({ message: 'Обязательнеый параметр' }),
+    (0, class_validator_1.MaxLength)(50, { message: 'Параметр не должен содежать более 50 символова' }),
+    (0, class_validator_1.IsString)({ message: 'Должен быть строкой' }),
+    __metadata("design:type", String)
+], EditTaskDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: true, description: 'Новой статус задачи' }),
+    (0, class_validator_1.IsDefined)({ message: 'Обязательнеый параметр' }),
+    (0, class_validator_1.IsBoolean)({ message: 'Должен быть boolean' }),
+    __metadata("design:type", Boolean)
+], EditTaskDto.prototype, "isActive", void 0);
+__decorate([
+    (0, class_validator_1.IsUUID)(4, { message: 'Некорректный формат ID' }),
+    (0, swagger_1.ApiProperty)({ example: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', description: 'Id задачи' }),
+    (0, class_validator_1.IsDefined)({ message: 'Обязательнеый параметр' }),
+    __metadata("design:type", String)
+], EditTaskDto.prototype, "taskId", void 0);
 __decorate([
     (0, class_validator_1.IsUUID)(4, { message: 'Некорректный формат ID' }),
     (0, swagger_1.ApiProperty)({ example: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', description: 'Id листа' }),
     (0, class_validator_1.IsDefined)({ message: 'Обязательнеый параметр' }),
     __metadata("design:type", String)
-], DeleteListDto.prototype, "listId", void 0);
+], EditTaskDto.prototype, "listId", void 0);
 __decorate([
     (0, class_validator_1.IsUUID)(4, { message: 'Некорректный формат ID' }),
     (0, swagger_1.ApiProperty)({ example: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', description: 'Id борда' }),
     (0, class_validator_1.IsDefined)({ message: 'Обязательнеый параметр' }),
     __metadata("design:type", String)
-], DeleteListDto.prototype, "boardId", void 0);
-//# sourceMappingURL=deleteList.dto.js.map
+], EditTaskDto.prototype, "boardId", void 0);
+//# sourceMappingURL=editTask.dto.js.map

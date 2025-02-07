@@ -13,6 +13,7 @@ import { BoardModule } from "../board/board.module";
   imports: [
     BoardModule,
     SequelizeModule.forFeature([Board, List])
-  ]
+  ],
+  exports: [ListService]
 })
 export class ListModule {}

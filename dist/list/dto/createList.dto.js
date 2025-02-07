@@ -24,7 +24,7 @@ __decorate([
 ], CreateListDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsUUID)(4, { message: 'Некорректный формат ID' }),
-    (0, swagger_1.ApiProperty)({ example: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', description: 'Id листа' }),
+    (0, swagger_1.ApiProperty)({ example: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', description: 'Id борда' }),
     (0, class_validator_1.IsDefined)({ message: 'Обязательнеый параметр' }),
     __metadata("design:type", String)
 ], CreateListDto.prototype, "boardId", void 0);
