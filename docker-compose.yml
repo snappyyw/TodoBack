@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  todo-nest:
+    container_name: todo-nest
+    image: todo-nest:latest
+    build:
+      context: .
+    env_file:
+      - .dev.env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 7000:7000
+      - 9229:9229
+    command: npm run start:dev
+    depends_on:
+      - postgres
+    restart: always
+  postgres:
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    container_name: postgres
+    image: postgres:12
+    env_file:
+      - .dev.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
