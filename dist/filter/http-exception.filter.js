@@ -8,26 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GlobalExceptionFilter = void 0;
 const common_1 = require("@nestjs/common");
-const common_2 = require("@nestjs/common");
 let GlobalExceptionFilter = class GlobalExceptionFilter {
     catch(exception, host) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         let status = common_1.HttpStatus.INTERNAL_SERVER_ERROR;
         let message = 'Internal server error';
-        if (exception instanceof common_2.NotFoundException) {
-            status = common_1.HttpStatus.NOT_FOUND;
-            message = exception.message;
-        }
-        else if (exception instanceof common_2.ForbiddenException) {
-            status = common_1.HttpStatus.FORBIDDEN;
-            message = exception.message;
+        if (exception instanceof common_1.HttpException) {
+            status = exception.getStatus();
+            const exceptionResponse = exception.getResponse();
+            if (typeof exceptionResponse === 'object') {
+                message = exceptionResponse.message || message;
+            }
+            else {
+                message = exceptionResponse;
+            }
+            if (Array.isArray(message)) {
+                message = message.map((err) => {
+                    if (typeof err === 'object' &&
+                        'property' in err &&
+                        'constraints' in err) {
+                        return `${err.property} - ${Object.values(err.constraints).join(', ')}`;
+                    }
+                    return typeof err === 'string' ? err : JSON.stringify(err);
+                });
+            }
         }
         console.error(`[${new Date().toISOString()}] Error:`, exception);
         response.status(status).json({
             statusCode: status,
             message: message,
-            timestamp: new Date().toISOString()
         });
     }
 };

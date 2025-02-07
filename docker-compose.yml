@@ -2,36 +2,53 @@ version: '3.8'
 
 services:
   app:
+    env_file:
+      - .env
+    image: snippymr/todo-nest
     build: .
     container_name: todo-nest
-    image: snippymr/todo-nest:latest
     restart: always
     ports:
-      - 7000:7000
+      - "${APP_PORT}:${APP_PORT}"
     environment:
-      PORT: 7000
-      POSTGRES_HOST: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: todo
-      POSTGRES_PASSWORD: root
-      POSTGRES_PORT: 5432
-      JWT_SECRET: flex
-      JWT_EXPIRES_IN: 150d
+      PORT: ${APP_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
 
   postgres:
+    env_file:
+      - .env
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: todo
-      PG_DATA: /var/lib/postgresql/data
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

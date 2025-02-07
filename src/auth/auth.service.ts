@@ -16,9 +16,14 @@ export class AuthService {
 
   async login(loginDto: LoginDto){
     const user = await this.userService.getUserByEmail(loginDto.email)
+
+    if(!user){
+      throw new HttpException('Неверный email или пароль', HttpStatus.UNAUTHORIZED)
+    }
+
     const passwordEquals = await bcrypt.compare(loginDto.password, user.password)
 
-    if(user && passwordEquals){
+    if(passwordEquals){
       return this.generateToken(user);
     } else {
       throw new HttpException('Неверный email или пароль', HttpStatus.UNAUTHORIZED)

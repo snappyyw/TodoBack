@@ -1,14 +1,14 @@
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { BadRequestException, ValidationPipe } from "@nestjs/common";
 
 import './config/jwt.config';
 
 import { AppModule } from "./app.module";
-import { ValidationPipe } from "./pipes/validation.pipe";
 import { GlobalExceptionFilter } from "./filter/http-exception.filter";
 
 async function startMain(){
-  const PORT = process.env.PORT || 5050;
+  const PORT = process.env.APP_PORT || 7000;
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalFilters(new GlobalExceptionFilter());
@@ -30,7 +30,11 @@ async function startMain(){
 
   SwaggerModule.setup('api/swagger', app, document);
 
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,
+    exceptionFactory: (errors) => new BadRequestException(errors)
+  }));
 
   await app.listen(PORT, () => console.log(`Start back (${PORT}-port)`));
 }

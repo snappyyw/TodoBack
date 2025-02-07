@@ -29,7 +29,7 @@ exports.AppModule = AppModule = __decorate([
         providers: [],
         imports: [
             config_1.ConfigModule.forRoot({
-                envFilePath: `.${process.env.NODE_ENV}.env`,
+                envFilePath: `.env`,
                 load: [jwt_config_1.default],
             }),
             sequelize_1.SequelizeModule.forRoot({

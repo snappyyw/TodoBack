@@ -18,7 +18,7 @@ import { Task } from "./task/task.model";
   providers: [],
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      envFilePath: `.env`,
       load: [jwtConfig],
     }),
     SequelizeModule.forRoot({
@@ -39,5 +39,4 @@ import { Task } from "./task/task.model";
   ],
 })
 export class AppModule{
-
 }
