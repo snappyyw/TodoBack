@@ -31,10 +31,16 @@ async function startMain(){
   SwaggerModule.setup('api/swagger', app, document);
 
   app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
     transform: true,
     exceptionFactory: (errors) => new BadRequestException(errors)
   }));
+
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization, X-Requested-With',
+    credentials: true
+  });
 
   await app.listen(PORT, () => console.log(`Start back (${PORT}-port)`));
 }

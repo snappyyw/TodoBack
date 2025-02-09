@@ -22,8 +22,11 @@ let AuthService = class AuthService {
     }
     async login(loginDto) {
         const user = await this.userService.getUserByEmail(loginDto.email);
+        if (!user) {
+            throw new common_1.HttpException('Неверный email или пароль', common_1.HttpStatus.UNAUTHORIZED);
+        }
         const passwordEquals = await bcrypt.compare(loginDto.password, user.password);
-        if (user && passwordEquals) {
+        if (passwordEquals) {
             return this.generateToken(user);
         }
         else {
